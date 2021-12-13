@@ -30,6 +30,8 @@ def score_calculator(grid, row, col, player):
         score += upper_diagonal(grid, row - 2, col + 2, player)
     if row - 1 >= 0 and col + 1 < 8 and row + 3 < 7 and col - 3 >= 0:
         score += upper_diagonal(grid, row - 1, col + 1, player)
+    if row + 4 < 7 and col - 4 >= 0:
+        score += upper_diagonal(grid, row, col, player)
     return score
 
 
