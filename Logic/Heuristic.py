@@ -1,10 +1,10 @@
-LENGTH = WIDTH = 7
-
+LENGTH = 6 
+WIDTH = 7
 
 def calculate_heuristic(grid, human_score, agent_score):
     heuristic = 0
     for i in range(LENGTH):
-        for j in range(LENGTH):
+        for j in range(WIDTH):
             if 0 <= j < WIDTH - 3:
                 human, agent = calculate_horizontal(grid, i, j)
                 heuristic += agent - human
@@ -24,12 +24,10 @@ def calculate_heuristic(grid, human_score, agent_score):
 
 
 def calculate_horizontal(grid, row, col):
-    if grid[row][col] == grid[row][col + 1] == grid[row][col + 2] == grid[row][col + 3] == 0:
-        return 0, 0
     if grid[row][col] == grid[row][col + 1] == grid[row][col + 2] == grid[row][col + 3] == 1:
-        return 10, 0
+        return 1000, 0
     if grid[row][col] == grid[row][col + 1] == grid[row][col + 2] == grid[row][col + 3] == 2:
-        return 0, 10
+        return 0, 1000
     if grid[row][col] == grid[row][col + 1] == grid[row][col + 2] == 1:
         return 5, 0
     if grid[row][col] == grid[row][col + 1] == grid[row][col + 2] == 2:

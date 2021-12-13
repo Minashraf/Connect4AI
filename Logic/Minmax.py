@@ -3,7 +3,8 @@ from copy import deepcopy
 
 from Logic.Heuristic import calculate_heuristic
 
-LENGTH = WIDTH = 7
+LENGTH = 6 
+WIDTH = 7
 Agent = 'AGENT'
 Human = 'HUMAN'
 
