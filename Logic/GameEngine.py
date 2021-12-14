@@ -48,15 +48,7 @@ def main():
 
         # AI turn
         if not player1_turn:
-            if DEPTH_K == 0:
-                pick_col = random.randint(0, 6)
-            else:
-                move, TREE_ROOT = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
-                coordinates, score = move
-                pick_col = coordinates[1]
-            insert_tile(window, AGENT, pick_col)
             player1_turn = True if agent_turn(window) else False
-
             def print_tree(root):
                 if not root:
                     return
