@@ -5,6 +5,10 @@ WIDTH = 7
 EMPTY = 0
 AI_AGENT = 2
 HUMAN = 1
+SCORE_4 = 1000
+SCORE_3 = 50
+SCORE_2 = 5
+SCORE_MID = 2
 
 
 def calculate_heuristic(grid):
@@ -14,14 +18,14 @@ def calculate_heuristic(grid):
         for j in range(WIDTH):
             if grid[i][j] == AI_AGENT:
                 if j == 3:
-                    agent += 2
+                    agent += SCORE_MID
                 agent += calculate_horizontal(grid, i, j, AI_AGENT)
                 agent += calculate_vertical(grid, i, j, AI_AGENT)
                 agent += calculate_sym_diagonal(grid, i, j, AI_AGENT)
                 agent += calculate_asym_diagonal(grid, i, j, AI_AGENT)
             elif grid[i][j] == HUMAN:
                 if j == 3:
-                    human += 2
+                    human += SCORE_MID
                 human += calculate_horizontal(grid, i, j, HUMAN)
                 human += calculate_vertical(grid, i, j, HUMAN)
                 human += calculate_sym_diagonal(grid, i, j, HUMAN)
@@ -41,11 +45,11 @@ def calculate_horizontal(grid, row, col, player):
         count_player = window.count(player)
         count_empty = window.count(EMPTY)
         if count_player == 4:
-            line_score += 100
+            line_score += SCORE_4
         if count_player == 3 and count_empty == 1:
-            line_score += 10
+            line_score += SCORE_3
         if count_player == 2 and count_empty == 2:
-            line_score += 2
+            line_score += SCORE_2
         start += 1
         end += 1
         score += line_score
@@ -66,11 +70,11 @@ def calculate_vertical(grid, row, col, player):
         count_player = window.count(player)
         count_empty = window.count(EMPTY)
         if count_player == 4:
-            line_score += 100
+            line_score += SCORE_4
         if count_player == 3 and count_empty == 1:
-            line_score += 10
+            line_score += SCORE_3
         if count_player == 2 and count_empty == 2:
-            line_score += 2
+            line_score += SCORE_2
         start -= 1
         end -= 1
         score += line_score
@@ -94,11 +98,11 @@ def calculate_sym_diagonal(grid, row, col, player):
         count_player = window.count(player)
         count_empty = window.count(EMPTY)
         if count_player == 4:
-            line_score += 100
+            line_score += SCORE_4
         if count_player == 3 and count_empty == 1:
-            line_score += 10
+            line_score += SCORE_3
         if count_player == 2 and count_empty == 2:
-            line_score += 2
+            line_score += SCORE_2
         startI += 1
         startJ += 1
         endI += 1
@@ -124,11 +128,11 @@ def calculate_asym_diagonal(grid, row, col, player):
         count_player = window.count(player)
         count_empty = window.count(EMPTY)
         if count_player == 4:
-            line_score += 100
+            line_score += SCORE_4
         if count_player == 3 and count_empty == 1:
-            line_score += 10
+            line_score += SCORE_3
         if count_player == 2 and count_empty == 2:
-            line_score += 2
+            line_score += SCORE_2
         startI += 1
         startJ -= 1
         endI += 1
