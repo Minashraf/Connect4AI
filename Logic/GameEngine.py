@@ -5,32 +5,33 @@ import Minmax
 from Calculate_score import score_calculator
 from Input_Window import popup_box
 
-WIN_WIDTH   = 750
-WIN_HEIGHT  = 650
-BLACK       = (0, 0, 0)
-WHITE       = (255, 255, 255)
-RED         = (255, 0, 0)
-BLUE        = (25,25,112)
-BLUE2       = (100,149,237)
-YELLOW      = (255, 255, 0)
-HUMAN       = 1
-AGENT       = 2
-DEPTH_K     = 2
-PRUNNING    = False
+WIN_WIDTH = 750
+WIN_HEIGHT = 650
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+RED = (255, 0, 0)
+BLUE = (25, 25, 112)
+BLUE2 = (100, 149, 237)
+YELLOW = (255, 255, 0)
+HUMAN = 1
+AGENT = 2
+DEPTH_K = 2
+PRUNNING = False
 HUMAN_SCORE = 0
 AGENT_SCORE = 0
-TREE_ROOT   = None
-BOARD       = [
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0],
-                [0, 0, 0, 0, 0, 0, 0]
-            ]
+TREE_ROOT = None
+BOARD = [
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0],
+    [0, 0, 0, 0, 0, 0, 0]
+]
 
 pygame.init()
 depth = alpha_beta = None
+
 
 def main():
     global BOARD, TREE_ROOT
@@ -53,6 +54,15 @@ def main():
                 pick_col = coordinates[1]
             insert_tile(window, AGENT, pick_col)
             player1_turn = True
+
+            def print_tree(root):
+                if not root:
+                    return
+                print(' '.join(row for row in root.state))
+                for child in root.children:
+                    print_tree(child)
+
+            print_tree(TREE_ROOT)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

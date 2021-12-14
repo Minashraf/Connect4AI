@@ -9,19 +9,16 @@ def popup_box():
         nonlocal depth
         if len(e1.get()) > 0 and e1.get().isnumeric():
             depth = int(e1.get())
-        #print(depth)
 
     def set_pruning():
         nonlocal alpha_beta
         alpha_beta = True
-        #print(alpha_beta)
         destroy()
 
     def destroy():
         nonlocal depth
         nonlocal alpha_beta
         root.destroy()
-
 
     root = Tk()
     root.geometry('800x300+100+200')
@@ -31,16 +28,16 @@ def popup_box():
     e1.pack()
     Label(root, text='').pack()
 
-    k_Button = Button(root, text='Insert K', width=13, height=1, command=set_depth)
-    k_Button.pack()
+    k_button = Button(root, text='Insert K', width=13, height=1, command=set_depth)
+    k_button.pack()
     Label(root, text='').pack()
     Label(root, text='').pack()
     frame = Frame(root)
     frame.pack()
-    pruning_Button = Button(frame, text='α-β pruning', width=25, height=4, fg='green', command=set_pruning)
-    pruning_Button.pack(side=LEFT)
-    no_pruning_Button = Button(frame, text='No pruning', width=25, height=4, fg='red', command=destroy)
-    no_pruning_Button.pack(side=LEFT)
+    pruning_button = Button(frame, text='α-β pruning', width=25, height=4, fg='green', command=set_pruning)
+    pruning_button.pack(side=LEFT)
+    no_pruning_button = Button(frame, text='No pruning', width=25, height=4, fg='red', command=destroy)
+    no_pruning_button.pack(side=LEFT)
     Label(root, text='').pack()
     Label(root, text='').pack()
     f = Frame(root)
