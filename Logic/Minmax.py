@@ -22,7 +22,7 @@ class Node:
     minimize = False
 
 
-def decision(state, maximum_depth, alpha_beta, human_score, agent_score):
+def decision(state, maximum_depth, alpha_beta):
     root = Node()
     root.minimize = False
     root.state = state
