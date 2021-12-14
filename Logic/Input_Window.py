@@ -9,17 +9,19 @@ def popup_box():
         nonlocal depth
         if len(e1.get()) > 0 and e1.get().isnumeric():
             depth = int(e1.get())
-        print(depth)
+        #print(depth)
 
     def set_pruning():
         nonlocal alpha_beta
         alpha_beta = True
-        print(alpha_beta)
+        #print(alpha_beta)
         destroy()
 
     def destroy():
+        nonlocal depth
+        nonlocal alpha_beta
         root.destroy()
-        return depth, alpha_beta
+
 
     root = Tk()
     root.geometry('800x300+100+200')
@@ -44,3 +46,5 @@ def popup_box():
     f = Frame(root)
     f.pack()
     root.mainloop()
+
+    return depth, alpha_beta

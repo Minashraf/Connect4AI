@@ -108,7 +108,5 @@ def draw_board(window):
 
 
 if __name__ == '__main__':
-    global depth
-    global alpha_beta
     depth, alpha_beta = popup_box()
     main()
