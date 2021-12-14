@@ -26,10 +26,6 @@ def decision(state, maximum_depth, alpha_beta, human_score, agent_score):
     root = Node()
     root.minimize = False
     root.state = state
-    root.human_score = human_score
-    root.agent_score = agent_score
-    root.move_coordinates
-    root.move_coordinates
     return maximize(root, maximum_depth, alpha_beta, -math.inf, math.inf), root
 
 
@@ -41,10 +37,6 @@ def maximize(node, maximum_depth, alpha_beta, alpha, beta):
     maximum_child = None
     for child in make_children(node, Agent):
         move, score = minimize(child, maximum_depth-1, alpha_beta, alpha, beta)
-        #print("child:")
-        #print(score)
-        #print(move)
-        #print(maximum_depth)
         if score > maximum_value:
             maximum_value = score
             maximum_child = child.move_coordinates

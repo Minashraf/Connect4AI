@@ -11,6 +11,12 @@ RED         = (255, 0, 0)
 BLUE        = (25,25,112)
 BLUE2       = (100,149,237)
 YELLOW      = (255, 255, 0)
+HUMAN       = 1
+AGENT       = 2
+DEPTH_K     = 5
+PRUNNING    = False
+ALPHA       = 0
+BETA =       0
 BOARD       = [
                 [0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0],
@@ -19,8 +25,6 @@ BOARD       = [
                 [0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0]
             ]
-HUMAN = 1
-AGENT = 2
 
 pygame.init()
 
@@ -37,7 +41,7 @@ def main():
 
         #AI turn
         if not player1_turn:
-            move, node = Minmax.decision(BOARD, 2, False, 0, 0)
+            move, node = Minmax.decision(BOARD, DEPTH_K, PRUNNING, ALPHA, BETA)
             coordinates, score = move
             insert_tile(window, AGENT, coordinates[1])
             player1_turn = True
