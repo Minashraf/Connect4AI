@@ -47,7 +47,7 @@ def main():
         # AI turn
         if not player1_turn:
             if DEPTH_K == 0:
-                pick_col = random.randint(0,6)
+                pick_col = random.randint(0, 6)
             else:    
                 move, TREE_ROOT = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
                 coordinates, score = move
@@ -97,12 +97,13 @@ def insert_tile(window, player, col):
         return False
     else:
         # Played
+        global AGENT_SCORE
+        global HUMAN_SCORE
         if player == 1:
-            global HUMAN_SCORE
             HUMAN_SCORE += score_calculator(BOARD, i - 1, col, player)
         else:
-            global AGENT_SCORE
             AGENT_SCORE += score_calculator(BOARD, i - 1, col, player)
+        print("Human's score:", str(HUMAN_SCORE), "...... Agent's score:", str(AGENT_SCORE))
         return True
 
 
