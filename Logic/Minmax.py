@@ -1,12 +1,14 @@
 import math
 from copy import deepcopy
 
-from Logic.Heuristic import calculate_heuristic
+from pygame.sprite import GroupSingle
+
+from Heuristic import calculate_heuristic
 
 LENGTH = 6 
 WIDTH = 7
-Agent = 'AGENT'
-Human = 'HUMAN'
+Agent = 2
+Human = 1
 
 
 class Node:
@@ -16,10 +18,8 @@ class Node:
     depth = 0
     value = None
     terminal = False
-    human_score = 0
-    agent_score = 0
+    move_coordinates = []
     minimize = False
-    change = None
 
 
 def decision(state, maximum_depth, alpha_beta, human_score, agent_score):
@@ -28,20 +28,26 @@ def decision(state, maximum_depth, alpha_beta, human_score, agent_score):
     root.state = state
     root.human_score = human_score
     root.agent_score = agent_score
+    root.move_coordinates
+    root.move_coordinates
     return maximize(root, maximum_depth, alpha_beta, -math.inf, math.inf), root
 
 
-def maximize(node, maximum_depth, alpha_beta, alpha, beta):
-    if not (maximum_depth > 0 and 0 in node.state):
+def maximize(node, maximum_depth, alpha_beta, alpha, beta): 
+    if maximum_depth == 0:
         node.terminal = True
-        return None, calculate_heuristic(node.state, node.human_score, node.agent_score)
+        return None, calculate_heuristic(node.state)
     maximum_value = -math.inf
     maximum_child = None
     for child in make_children(node, Agent):
-        score = minimize(node, maximum_depth - 1, alpha_beta, alpha, beta)[1]
+        move, score = minimize(child, maximum_depth-1, alpha_beta, alpha, beta)
+        #print("child:")
+        #print(score)
+        #print(move)
+        #print(maximum_depth)
         if score > maximum_value:
             maximum_value = score
-            maximum_child = child.state
+            maximum_child = child.move_coordinates
         if alpha_beta:
             if maximum_value >= beta:
                 break
@@ -51,17 +57,17 @@ def maximize(node, maximum_depth, alpha_beta, alpha, beta):
     return maximum_child, maximum_value
 
 
-def minimize(node, maximum_depth, alpha_beta, alpha, beta):
-    if not (maximum_depth > 0 and 0 in node.state):
+def minimize(node, maximum_depth, alpha_beta, alpha, beta): 
+    if maximum_depth == 0:
         node.terminal = True
-        return None, calculate_heuristic(node.state, node.human_score, node.agent_score)
+        return None, calculate_heuristic(node.state)
     minimum_value = math.inf
     minimum_child = None
     for child in make_children(node, Human):
-        score = maximize(node, maximum_depth - 1, alpha_beta, alpha, beta)[1]
+        move, score = maximize(child, maximum_depth-1, alpha_beta, alpha, beta)
         if score < minimum_value:
             minimum_value = score
-            minimum_child = child.state
+            minimum_child = child.move_coordinates
         if alpha_beta:
             if minimum_value <= alpha:
                 break
@@ -74,18 +80,22 @@ def minimize(node, maximum_depth, alpha_beta, alpha, beta):
 
 def make_children(node, player):
     children = []
-    for i in range(LENGTH):
-        for j in range(WIDTH):
-            if node.state[i][j] == 0:
-                if i < LENGTH - 1 and node.state[i + 1][j] != 0 or i == LENGTH - 1:
-                    new_state = deepcopy(node.state)
-                    new_state[i][j] = 1 if player == Human else 2
-                    child = Node()
-                    child.parent = node
-                    child.state = new_state
-                    child.minimize = not node.minimize
-                    child.change = j
-                    child.depth = node.depth + 1
-                    children.append(child)
+    for j in range(0, WIDTH):
+        i = LENGTH-1
+        while i >= 0 and node.state[i][j] != 0:
+            i-=1
+        if i < 0:
+            continue
+        new_state = deepcopy(node.state)
+        new_state[i][j] = player
+        child = Node()
+        child.parent = node
+        child.state = new_state
+        child.minimize = not node.minimize
+        child.depth = node.depth + 1
+        child.move_coordinates = []
+        child.move_coordinates.append(i)
+        child.move_coordinates.append(j)
+        children.append(child)
     node.children = children
     return children
