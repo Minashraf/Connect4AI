@@ -22,6 +22,7 @@ PRUNNING = False
 HUMAN_SCORE = 0
 AGENT_SCORE = 0
 TREE_ROOT = None
+NO_MOVES = False
 BOARD = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -32,10 +33,11 @@ BOARD = [
 ]
 
 pygame.init()
-font = pygame.font.SysFont('ariel.ttf', 24)
+
+font = pygame.font.SysFont('ariel.ttf', 32)
 
 def main():
-    global BOARD, TREE_ROOT
+    global BOARD
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
@@ -53,7 +55,7 @@ def main():
                 coordinates, score = move
                 pick_col = coordinates[1]
             insert_tile(window, AGENT, pick_col)
-            player1_turn = True
+            player1_turn = True if agent_turn(window) else False
 
             def print_tree(root):
                 if not root:
@@ -87,6 +89,23 @@ def main():
                 else:
                     player1_turn = False
 
+
+def agent_turn(window):
+    global NO_MOVES, TREE_ROOT
+    played = False
+    if DEPTH_K == 0:
+        pick_col = random.randint(0, 6)
+    else:    
+        move, TREE_ROOT = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
+        coordinates, score = move
+        if not coordinates == None:
+            pick_col = coordinates[1]
+        else:
+            pick_col = None
+            NO_MOVES = True
+    if not pick_col == None: 
+        played = insert_tile(window, AGENT, pick_col)
+    return played
 
 # Insert tile in column, if column is full return false indicating that no move was done. Else return true
 def insert_tile(window, player, col):

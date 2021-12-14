@@ -7,8 +7,7 @@ def popup_box():
 
     def set_depth():
         nonlocal depth
-        if len(e1.get()) > 0 and e1.get().isnumeric():
-            depth = int(e1.get())
+        depth = int(d.get())
 
     def set_pruning():
         nonlocal alpha_beta
@@ -24,8 +23,8 @@ def popup_box():
     root.geometry('800x300+100+200')
     root.title('Connect 4')
     Label(root, text="Enter the depth of tree K: ").pack()
-    e1 = Entry(root)
-    e1.pack()
+    d = Spinbox(root, from_=0, to=7)
+    d.pack()
     Label(root, text='').pack()
 
     k_button = Button(root, text='Insert K', width=13, height=1, command=set_depth)
