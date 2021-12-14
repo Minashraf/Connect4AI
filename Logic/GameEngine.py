@@ -3,7 +3,7 @@ import time
 import random
 import Minmax
 from Calculate_score import score_calculator
-
+from Input_Window import popup_box
 WIN_WIDTH = 750
 WIN_HEIGHT = 650
 BLACK = (0, 0, 0)
@@ -25,10 +25,12 @@ AGENT = 2
 human_score = agent_score = 0
 
 pygame.init()
-
+depth = alpha_beta = None
 
 def main():
     global BOARD
+    global depth
+    global alpha_beta
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     window.fill(WHITE)
@@ -40,7 +42,7 @@ def main():
 
         # AI turn
         if not player1_turn:
-            move, node = Minmax.decision(BOARD, 2, False, 0, 0)
+            move, node = Minmax.decision(BOARD, depth, alpha_beta, human_score, agent_score)
             coordinates, score = move
             insert_tile(window, AGENT, coordinates[1])
             player1_turn = True
@@ -106,4 +108,7 @@ def draw_board(window):
 
 
 if __name__ == '__main__':
+    global depth
+    global alpha_beta
+    depth, alpha_beta = popup_box()
     main()
