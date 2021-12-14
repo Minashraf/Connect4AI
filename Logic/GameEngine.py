@@ -1,3 +1,4 @@
+from tkinter.constants import FALSE, NONE
 import pygame
 import time
 import random
@@ -6,7 +7,7 @@ from Calculate_score import score_calculator
 from Input_Window import popup_box
 
 WIN_WIDTH = 750
-WIN_HEIGHT = 650
+WIN_HEIGHT = 750
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -30,14 +31,12 @@ BOARD = [
 ]
 
 pygame.init()
-depth = alpha_beta = None
-
+font = pygame.font.SysFont('ariel.ttf', 24)
 
 def main():
     global BOARD, TREE_ROOT
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
-    window.fill(WHITE)
     pygame.display.flip()
     run = True
     player1_turn = random.randint(1, 1000000) % 2 == 0
@@ -103,11 +102,11 @@ def insert_tile(window, player, col):
             HUMAN_SCORE += score_calculator(BOARD, i - 1, col, player)
         else:
             AGENT_SCORE += score_calculator(BOARD, i - 1, col, player)
-        print("Human's score:", str(HUMAN_SCORE), "...... Agent's score:", str(AGENT_SCORE))
         return True
 
 
 def draw_board(window):
+    window.fill(WHITE)
     pygame.draw.rect(window, BLUE, pygame.Rect(25, 25, 700, 600))
     for i in range(1, 7):
         pygame.draw.line(window, BLUE2, (25 + i * 100, 25), (25 + i * 100, 625), 3)
@@ -122,6 +121,10 @@ def draw_board(window):
             else:
                 color = WHITE
             pygame.draw.circle(window, color, (75 + j * 100, 75 + i * 100), 45, 0)
+    t1 = font.render("Your  Score: "+str(HUMAN_SCORE), 1, BLUE2)
+    t2 = font.render("AI    Score: "+str(AGENT_SCORE), 1, RED)
+    window.blit(t1, (25, 700))
+    window.blit(t2, (380, 700))
     pygame.display.update()
 
 
