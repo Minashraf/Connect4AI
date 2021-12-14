@@ -19,6 +19,7 @@ DEPTH_K     = 2
 PRUNNING    = False
 HUMAN_SCORE = 0
 AGENT_SCORE = 0
+TREE_ROOT   = None
 BOARD       = [
                 [0, 0, 0, 0, 0, 0, 0],
                 [0, 0, 0, 0, 0, 0, 0],
@@ -32,9 +33,7 @@ pygame.init()
 depth = alpha_beta = None
 
 def main():
-    global BOARD
-    global depth
-    global alpha_beta
+    global BOARD, TREE_ROOT
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     window.fill(WHITE)
@@ -46,7 +45,7 @@ def main():
 
         # AI turn
         if not player1_turn:
-            move, node = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
+            move, TREE_ROOT = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
             coordinates, score = move
             insert_tile(window, AGENT, coordinates[1])
             player1_turn = True
