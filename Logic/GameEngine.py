@@ -45,9 +45,13 @@ def main():
 
         # AI turn
         if not player1_turn:
-            move, TREE_ROOT = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
-            coordinates, score = move
-            insert_tile(window, AGENT, coordinates[1])
+            if DEPTH_K == 0:
+                pick_col = random.randint(0,6)
+            else:    
+                move, TREE_ROOT = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
+                coordinates, score = move
+                pick_col = coordinates[1]
+            insert_tile(window, AGENT, pick_col)
             player1_turn = True
 
         for event in pygame.event.get():
