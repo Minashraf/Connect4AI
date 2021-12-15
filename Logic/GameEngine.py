@@ -163,16 +163,28 @@ def game_over(window):
 
 
 def print_tree(root):
-    if not root:
-        return
-    s = [[str(e) for e in row] for row in root.state]
-    lens = [max(map(len, col)) for col in zip(*s)]
-    fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
-    table = [fmt.format(*row) for row in s]
-    print('\n'.join(table))
-    print('-' * len(table[-1]) * 7)
-    for child in root.children:
-        print_tree(child)
+    queue = [root]
+    visited = set()
+    while len(queue):
+        root = queue.pop(0)
+        if array_to_string(root.state) in visited:
+            continue
+        visited.add(array_to_string(root.state))
+        s = [[str(e) for e in row] for row in root.state]
+        lens = [max(map(len, col)) for col in zip(*s)]
+        #print('Insert at column: ', str(root.move_coordinates[1]))
+        fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
+        table = [fmt.format(*row) for row in s]
+        print('\n'.join(table))
+        print('-' * len(table[-1]) * 7)
+        for child in root.children:
+            queue.append(child)
+
+
+
+def array_to_string(array):
+    print(''.join([''.join(map(str, x)) for x in array]))
+    return ''.join([''.join(map(str, x)) for x in array])
 
 
 if __name__ == '__main__':
