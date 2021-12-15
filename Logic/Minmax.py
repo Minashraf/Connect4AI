@@ -64,7 +64,6 @@ def minimize(node, maximum_depth, alpha_beta, alpha, beta):
             if minimum_value < beta:
                 beta = minimum_value
     node.value = minimum_value
-
     return minimum_child, minimum_value
 
 

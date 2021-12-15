@@ -15,14 +15,16 @@ RED = (255, 0, 0)
 BLUE = (25, 25, 112)
 BLUE2 = (100, 149, 237)
 YELLOW = (255, 255, 0)
+GREEN = (0, 255, 0)
 HUMAN = 1
 AGENT = 2
 DEPTH_K = 2
 PRUNNING = False
 HUMAN_SCORE = 0
 AGENT_SCORE = 0
+
 TREE_ROOT = Minmax.Node()
-NO_MOVES = False
+EMPTY_CELLS = 7*6
 BOARD = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -45,28 +47,15 @@ def main():
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
     run = True
+    empty_cells = 7 * 6
     player1_turn = random.randint(1, 1000000) % 2 == 0
-    while run:
+    while run:    
         draw_board(window)
-
+        if EMPTY_CELLS <= 0:
+            break
         # AI turn
         if not player1_turn:
             player1_turn = True if agent_turn(window) else False
-            count += 1
-            if count == 42:
-                return
-            def print_tree(root):
-                if not root:
-                    return
-                s = [[str(e) for e in row] for row in root.state]
-                lens = [max(map(len, col)) for col in zip(*s)]
-                fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
-                table = [fmt.format(*row) for row in s]
-                print('\n'.join(table))
-                print('-' * len(table[-1]) * 7)
-                for child in root.children:
-                    print_tree(child)
-
             os.system('cls' if os.name == 'nt' else 'clear')
             print_tree(TREE_ROOT)
 
@@ -87,9 +76,15 @@ def main():
                 else:
                     player1_turn = False
 
+    if EMPTY_CELLS <= 0:
+        game_over(window)
+    while run:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
 
 def agent_turn(window):
-    global NO_MOVES, TREE_ROOT
+    global TREE_ROOT
     played = False
     if DEPTH_K == 0:
         pick_col = random.randint(0, 6)
@@ -100,8 +95,7 @@ def agent_turn(window):
             pick_col = coordinates[1]
         else:
             pick_col = None
-            NO_MOVES = True
-    if pick_col is not None:
+    if pick_col is not None: 
         played = insert_tile(window, AGENT, pick_col)
     return played
 
@@ -121,14 +115,13 @@ def insert_tile(window, player, col):
         return False
     else:
         # Played
-        global AGENT_SCORE
-        global HUMAN_SCORE
+        global AGENT_SCORE, HUMAN_SCORE, EMPTY_CELLS
         if player == 1:
             HUMAN_SCORE += score_calculator(BOARD, i - 1, col, player)
         else:
             AGENT_SCORE += score_calculator(BOARD, i - 1, col, player)
+        EMPTY_CELLS-= 1
         return True
-
 
 def draw_board(window):
     window.fill(WHITE)
@@ -152,13 +145,35 @@ def draw_board(window):
     window.blit(t2, (380, 700))
     pygame.display.update()
 
+def game_over(window):
+    window.fill(WHITE)
+    font2 = pygame.font.SysFont('ariel.ttf', 100)
+    if HUMAN_SCORE > AGENT_SCORE:
+        t = font2.render("Winner", 1, GREEN)
+    elif HUMAN_SCORE < AGENT_SCORE:
+        t = font2.render("Loser", 1, RED)
+    else:
+        t = font2.render("Draw", 1, BLACK)
+    t1 = font.render("Your  Score: "+str(HUMAN_SCORE), 1, BLUE2)
+    t2 = font.render("AI    Score: "+str(AGENT_SCORE), 1, RED)
+    window.blit(t,(WIN_WIDTH/2-100, WIN_HEIGHT/2-100))
+    window.blit(t1, (100, 500))
+    window.blit(t2, (500, 500))
+    pygame.display.update()
+
+def print_tree(root):
+    if not root:
+        return
+    s = [[str(e) for e in row] for row in root.state]
+    lens = [max(map(len, col)) for col in zip(*s)]
+    fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
+    table = [fmt.format(*row) for row in s]
+    print('\n'.join(table))
+    print('-'*len(table[-1])*7)
+    for child in root.children:
+        print_tree(child)
+
 
 if __name__ == '__main__':
     DEPTH_K, PRUNNING = popup_box()
     main()
-    if HUMAN_SCORE > AGENT_SCORE:
-        print_result('Congratulations! You won 😃😃', 'lightgreen')
-    elif HUMAN_SCORE == AGENT_SCORE:
-        print_result('It is a draw!', 'yellow')
-    else:
-        print_result('You lost 😭😭', 'red')
