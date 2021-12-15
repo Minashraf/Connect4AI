@@ -15,18 +15,20 @@ def calculate_heuristic(grid):
     for i in range(LENGTH):
         for j in range(WIDTH):
 
-            def calculate(player, score, col_index):
+            def calculate(player, col_index):
+                score = 0
                 if col_index == 3:
                     score += SCORE_MID
                 score += calculate_horizontal(grid, i, col_index, player)
                 score += calculate_vertical(grid, i, col_index, player)
                 score += calculate_sym_diagonal(grid, i, col_index, player)
                 score += calculate_asym_diagonal(grid, i, col_index, player)
+                return score
 
             if grid[i][j] == AI_AGENT:
-                calculate(AI_AGENT, agent, j)
+                agent += calculate(AI_AGENT, j)
             elif grid[i][j] == HUMAN:
-                calculate(HUMAN, human, j)
+                human += calculate(HUMAN, j)
 
     return agent - human
 
@@ -112,7 +114,8 @@ def count_score(window, player):
     count_empty = window.count(EMPTY)
     if count_player == 4:
         return SCORE_4
-    if count_player == 3 and count_empty == 1:
+    elif count_player == 3 and count_empty == 1:
         return SCORE_3
-    if count_player == 2 and count_empty == 2:
+    elif count_player == 2 and count_empty == 2:
         return SCORE_2
+    return 0

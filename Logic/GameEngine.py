@@ -55,7 +55,6 @@ def main():
             count += 1
             if count == 42:
                 return
-
             def print_tree(root):
                 if not root:
                     return
