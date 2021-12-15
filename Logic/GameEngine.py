@@ -6,6 +6,7 @@ import random
 import Minmax
 from Calculate_score import score_calculator
 from Input_Window import popup_box
+from Result_Window import print_result
 
 WIN_WIDTH = 750
 WIN_HEIGHT = 750
@@ -39,6 +40,8 @@ font = pygame.font.SysFont('ariel.ttf', 32)
 
 def main():
     global BOARD
+    global TREE_ROOT
+    count = 0
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
@@ -168,7 +171,6 @@ def print_tree(root):
     print('-'*len(table[-1])*7)
     for child in root.children:
         print_tree(child)
-
 
 
 if __name__ == '__main__':
