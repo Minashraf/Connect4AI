@@ -21,6 +21,8 @@ DEPTH_K = 2
 PRUNNING = False
 HUMAN_SCORE = 0
 AGENT_SCORE = 0
+Nodes_Expanded = 0
+Total_Time = 0
 
 TREE_ROOT = Minmax.Node()
 EMPTY_CELLS = 7 * 6
@@ -41,6 +43,7 @@ font = pygame.font.SysFont('ariel.ttf', 32)
 def main():
     global BOARD
     global TREE_ROOT
+    global Total_Time
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
@@ -52,7 +55,10 @@ def main():
             break
         # AI turn
         if not player1_turn:
+            tic = time.time()
             player1_turn = True if agent_turn(window) else False
+            toc = time.time()
+            Total_Time += (toc - tic)
             os.system('cls' if os.name == 'nt' else 'clear')
             print_tree(TREE_ROOT)
 
@@ -163,6 +169,9 @@ def game_over(window):
 
 
 def print_tree(root):
+    global Nodes_Expanded
+    if len(root.state) == 0:
+        return
     queue = [root]
     visited = set()
     while len(queue):
@@ -175,18 +184,22 @@ def print_tree(root):
         #print('Insert at column: ', str(root.move_coordinates[1]))
         fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
         table = [fmt.format(*row) for row in s]
+        Nodes_Expanded += 1
         print('\n'.join(table))
+        #print(table)
         print('-' * len(table[-1]) * 7)
         for child in root.children:
-            queue.append(child)
+            if len(child.state):
+                queue.append(child)
 
 
 
 def array_to_string(array):
-    print(''.join([''.join(map(str, x)) for x in array]))
     return ''.join([''.join(map(str, x)) for x in array])
 
 
 if __name__ == '__main__':
     DEPTH_K, PRUNNING = popup_box()
     main()
+    print("Time taken: " + str(Total_Time))
+    print("Number of nodes expanded: " + str(Nodes_Expanded))
