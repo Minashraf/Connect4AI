@@ -6,6 +6,7 @@ import random
 import Minmax
 from Calculate_score import score_calculator
 from Input_Window import popup_box
+from Result_Window import print_result
 
 WIN_WIDTH = 750
 WIN_HEIGHT = 750
@@ -38,12 +39,14 @@ font = pygame.font.SysFont('ariel.ttf', 32)
 
 def main():
     global BOARD
+    global TREE_ROOT
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
-    run = True
+    run = 6*7
     player1_turn = random.randint(1, 1000000) % 2 == 0
-    while run:
+    while run >= 0:
+        run -= 1
         draw_board(window)
 
         # AI turn
@@ -80,6 +83,14 @@ def main():
                     continue
                 else:
                     player1_turn = False
+
+
+    if HUMAN_SCORE > AGENT_SCORE:
+        print_result('Congratulations! You won 😃😃', 'lightgreen')
+    elif HUMAN_SCORE == AGENT_SCORE:
+        print_result('It is a draw!', 'yellow')
+    else:
+        print_result('You lost 😭😭', 'red')
 
 
 def agent_turn(window):
