@@ -29,7 +29,7 @@ def decision(state, maximum_depth, alpha_beta):
     return maximize(root, maximum_depth, alpha_beta, -math.inf, math.inf), root
 
 
-def maximize(node, maximum_depth, alpha_beta, alpha, beta): 
+def maximize(node, maximum_depth, alpha_beta, alpha, beta):
     if maximum_depth == 0:
         node.terminal = True
         return None, calculate_heuristic(node.state)
@@ -49,7 +49,7 @@ def maximize(node, maximum_depth, alpha_beta, alpha, beta):
     return maximum_child, maximum_value
 
 
-def minimize(node, maximum_depth, alpha_beta, alpha, beta): 
+def minimize(node, maximum_depth, alpha_beta, alpha, beta):
     if maximum_depth == 0:
         node.terminal = True
         return None, calculate_heuristic(node.state)
@@ -66,7 +66,6 @@ def minimize(node, maximum_depth, alpha_beta, alpha, beta):
             if minimum_value < beta:
                 beta = minimum_value
     node.value = minimum_value
-
     return minimum_child, minimum_value
 
 
