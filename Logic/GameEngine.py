@@ -1,4 +1,3 @@
-from tkinter.constants import FALSE, NONE
 import pygame
 import os
 import time
@@ -22,7 +21,7 @@ DEPTH_K = 2
 PRUNNING = False
 HUMAN_SCORE = 0
 AGENT_SCORE = 0
-TREE_ROOT = None
+TREE_ROOT = Minmax.Node()
 NO_MOVES = False
 BOARD = [
     [0, 0, 0, 0, 0, 0, 0],
@@ -36,6 +35,7 @@ BOARD = [
 pygame.init()
 
 font = pygame.font.SysFont('ariel.ttf', 32)
+
 
 def main():
     global BOARD
@@ -51,6 +51,7 @@ def main():
         # AI turn
         if not player1_turn:
             player1_turn = True if agent_turn(window) else False
+
             def print_tree(root):
                 if not root:
                     return
@@ -59,7 +60,7 @@ def main():
                 fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
                 table = [fmt.format(*row) for row in s]
                 print('\n'.join(table))
-                print('-'*len(table[-1])*7)
+                print('-' * len(table[-1]) * 7)
                 for child in root.children:
                     print_tree(child)
 
@@ -89,17 +90,18 @@ def agent_turn(window):
     played = False
     if DEPTH_K == 0:
         pick_col = random.randint(0, 6)
-    else:    
+    else:
         move, TREE_ROOT = Minmax.decision(BOARD, DEPTH_K, PRUNNING)
         coordinates, score = move
-        if not coordinates == None:
+        if coordinates is not None:
             pick_col = coordinates[1]
         else:
             pick_col = None
             NO_MOVES = True
-    if not pick_col == None: 
+    if pick_col is not None:
         played = insert_tile(window, AGENT, pick_col)
     return played
+
 
 # Insert tile in column, if column is full return false indicating that no move was done. Else return true
 def insert_tile(window, player, col):
@@ -141,8 +143,8 @@ def draw_board(window):
             else:
                 color = WHITE
             pygame.draw.circle(window, color, (75 + j * 100, 75 + i * 100), 45, 0)
-    t1 = font.render("Your  Score: "+str(HUMAN_SCORE), 1, BLUE2)
-    t2 = font.render("AI    Score: "+str(AGENT_SCORE), 1, RED)
+    t1 = font.render("Your  Score: " + str(HUMAN_SCORE), True, BLUE2)
+    t2 = font.render("AI    Score: " + str(AGENT_SCORE), True, RED)
     window.blit(t1, (25, 700))
     window.blit(t2, (380, 700))
     pygame.display.update()
