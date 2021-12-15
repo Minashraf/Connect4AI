@@ -40,6 +40,7 @@ font = pygame.font.SysFont('ariel.ttf', 32)
 def main():
     global BOARD
     global TREE_ROOT
+    count = 0
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
@@ -51,6 +52,9 @@ def main():
         # AI turn
         if not player1_turn:
             player1_turn = True if agent_turn(window) else False
+            count += 1
+            if count == 42:
+                return
             def print_tree(root):
                 if not root:
                     return
