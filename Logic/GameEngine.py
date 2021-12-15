@@ -43,10 +43,9 @@ def main():
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
-    run = 6*7
+    run = True
     player1_turn = random.randint(1, 1000000) % 2 == 0
-    while run >= 0:
-        run -= 1
+    while run:
         draw_board(window)
 
         # AI turn
@@ -83,14 +82,6 @@ def main():
                     continue
                 else:
                     player1_turn = False
-
-
-    if HUMAN_SCORE > AGENT_SCORE:
-        print_result('Congratulations! You won 😃😃', 'lightgreen')
-    elif HUMAN_SCORE == AGENT_SCORE:
-        print_result('It is a draw!', 'yellow')
-    else:
-        print_result('You lost 😭😭', 'red')
 
 
 def agent_turn(window):
@@ -160,3 +151,9 @@ def draw_board(window):
 if __name__ == '__main__':
     DEPTH_K, PRUNNING = popup_box()
     main()
+    if HUMAN_SCORE > AGENT_SCORE:
+        print_result('Congratulations! You won 😃😃', 'lightgreen')
+    elif HUMAN_SCORE == AGENT_SCORE:
+        print_result('It is a draw!', 'yellow')
+    else:
+        print_result('You lost 😭😭', 'red')
