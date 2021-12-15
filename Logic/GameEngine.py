@@ -5,7 +5,6 @@ import random
 import Minmax
 from Calculate_score import score_calculator
 from Input_Window import popup_box
-from Result_Window import print_result
 
 WIN_WIDTH = 750
 WIN_HEIGHT = 750
@@ -24,7 +23,7 @@ HUMAN_SCORE = 0
 AGENT_SCORE = 0
 
 TREE_ROOT = Minmax.Node()
-EMPTY_CELLS = 7*6
+EMPTY_CELLS = 7 * 6
 BOARD = [
     [0, 0, 0, 0, 0, 0, 0],
     [0, 0, 0, 0, 0, 0, 0],
@@ -42,14 +41,12 @@ font = pygame.font.SysFont('ariel.ttf', 32)
 def main():
     global BOARD
     global TREE_ROOT
-    count = 0
     window = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
     pygame.display.set_caption('Connect 4')
     pygame.display.flip()
     run = True
-    empty_cells = 7 * 6
     player1_turn = random.randint(1, 1000000) % 2 == 0
-    while run:    
+    while run:
         draw_board(window)
         if EMPTY_CELLS <= 0:
             break
@@ -83,6 +80,7 @@ def main():
             if event.type == pygame.QUIT:
                 run = False
 
+
 def agent_turn(window):
     global TREE_ROOT
     played = False
@@ -95,7 +93,7 @@ def agent_turn(window):
             pick_col = coordinates[1]
         else:
             pick_col = None
-    if pick_col is not None: 
+    if pick_col is not None:
         played = insert_tile(window, AGENT, pick_col)
     return played
 
@@ -120,8 +118,9 @@ def insert_tile(window, player, col):
             HUMAN_SCORE += score_calculator(BOARD, i - 1, col, player)
         else:
             AGENT_SCORE += score_calculator(BOARD, i - 1, col, player)
-        EMPTY_CELLS-= 1
+        EMPTY_CELLS -= 1
         return True
+
 
 def draw_board(window):
     window.fill(WHITE)
@@ -145,21 +144,23 @@ def draw_board(window):
     window.blit(t2, (380, 700))
     pygame.display.update()
 
+
 def game_over(window):
     window.fill(WHITE)
     font2 = pygame.font.SysFont('ariel.ttf', 100)
     if HUMAN_SCORE > AGENT_SCORE:
-        t = font2.render("Winner", 1, GREEN)
+        t = font2.render("Winner", True, GREEN)
     elif HUMAN_SCORE < AGENT_SCORE:
-        t = font2.render("Loser", 1, RED)
+        t = font2.render("Loser", True, RED)
     else:
-        t = font2.render("Draw", 1, BLACK)
-    t1 = font.render("Your  Score: "+str(HUMAN_SCORE), 1, BLUE2)
-    t2 = font.render("AI    Score: "+str(AGENT_SCORE), 1, RED)
-    window.blit(t,(WIN_WIDTH/2-100, WIN_HEIGHT/2-100))
+        t = font2.render("Draw", True, BLACK)
+    t1 = font.render("Your  Score: " + str(HUMAN_SCORE), True, BLUE2)
+    t2 = font.render("AI    Score: " + str(AGENT_SCORE), True, RED)
+    window.blit(t, (WIN_WIDTH / 2 - 100, WIN_HEIGHT / 2 - 100))
     window.blit(t1, (100, 500))
     window.blit(t2, (500, 500))
     pygame.display.update()
+
 
 def print_tree(root):
     if not root:
@@ -169,7 +170,7 @@ def print_tree(root):
     fmt = '\t'.join('{{:{}}}'.format(x) for x in lens)
     table = [fmt.format(*row) for row in s]
     print('\n'.join(table))
-    print('-'*len(table[-1])*7)
+    print('-' * len(table[-1]) * 7)
     for child in root.children:
         print_tree(child)
 
